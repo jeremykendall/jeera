@@ -10,17 +10,28 @@ defined('APPLICATION_ENV')
 
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
-    realpath(APPLICATION_PATH . '/../library'),
-    get_include_path(),
-)));
+        realpath(APPLICATION_PATH . '/../library'),
+        get_include_path(),
+    )));
 
 /** Zend_Application */
 require_once 'Zend/Application.php';
 
 // Create application, bootstrap, and run
 $application = new Zend_Application(
-    APPLICATION_ENV,
-    APPLICATION_PATH . '/configs/application.ini'
+        APPLICATION_ENV,
+        APPLICATION_PATH . '/configs/application.ini'
 );
 $application->bootstrap()
-            ->run();
+    ->run();
+
+function d($var, $label = '', $echo = true)
+{
+    Zend_Debug::dump($var, $label, $echo);
+}
+
+function dd($var, $label = '', $echo = true)
+{
+    d($var, $label, $echo);
+    die();
+}

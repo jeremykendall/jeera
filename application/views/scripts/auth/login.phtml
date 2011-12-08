@@ -1,0 +1,7 @@
+<?php 
+
+if ($this->loginErrorMessage) {
+    echo '<p class="error">' . $this->loginErrorMessage . "</p>\n";
+}
+
+echo $this->form->render();

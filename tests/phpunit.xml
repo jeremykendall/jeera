@@ -1,17 +1,33 @@
-<phpunit bootstrap="./bootstrap.php">
-    <testsuite name="Application Test Suite">
-        <directory>./application</directory>
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./bootstrap.php" colors="true" verbose="true">
+
+    <testsuite name="Jeera Application Tests">
+        <directory>./application</directory>    
     </testsuite>
-    <testsuite name="Library Test Suite">
+     
+    <testsuite name="Jeera Library Tests">
         <directory>./library</directory>
-    </testsuite>
+    </testsuite> 
     
     <filter>
-        <!-- If Zend Framework is inside your project's library, uncomment this filter -->
-        <!-- 
         <whitelist>
-            <directory suffix=".php">../../library/Zend</directory>
+            <directory suffix=".php">../application</directory>
+            <directory suffix=".php">../library/Jeera</directory>
+            <exclude>
+                <directory suffix=".php">../library/Zend</directory>
+                <directory suffix=".phtml">../application/</directory>
+                <file>../application/Bootstrap.php</file>
+            </exclude>
         </whitelist>
-        -->
     </filter>
+    
+    <logging>
+        <log type="coverage-html" 
+            target="./log/report" 
+            charset="UTF-8" 
+            yui="true" 
+            highlight="true" 
+            lowUpperBound="50" 
+            highLowerBound="80" />
+    </logging>
 </phpunit>

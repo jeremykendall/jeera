@@ -1,2 +1,8 @@
-CREATE USER 'jeeradbuser' IDENTIFIED BY '29nvms09*jMS0s!$hso0.';
+CREATE USER 'jeerauser'@'localhost' IDENTIFIED BY 'jeerapass';
+GRANT SELECT ,
+INSERT ,
+UPDATE ,
+DELETE ,
+CREATE ,
+DROP ON `jeeradb` . * TO 'jeerauser'@'localhost';
 FLUSH PRIVILEGES;
