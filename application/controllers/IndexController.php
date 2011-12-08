@@ -3,17 +3,12 @@
 class IndexController extends Zend_Controller_Action
 {
 
-    public function init()
-    {
-        /* Initialize action controller here */
-    }
-
+    /**
+     * Redirect all traffic to /tickets/
+     */
     public function indexAction()
     {
-        $auth = Zend_Auth::getInstance();
-        if ($auth->hasIdentity()) {
-            d($auth->getIdentity());
-        }
+        return $this->_helper->redirector('index', 'tickets');
     }
 
 }
