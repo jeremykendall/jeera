@@ -60,9 +60,9 @@ class Jeera_Controller_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         if ($this->_auth->hasIdentity()) {
             $identity = $this->_auth->getIdentity();
             if (is_array($identity)) {
-                $role = $identity['role'];
+                $role = $identity['userRole'];
             } else if (is_object($identity)) {
-                $role = $identity->role;
+                $userRole = $identity->userRole;
             } else {
                 // If $identity isn't an array and isn't an object, something isn't right.
                 // Set role to guest and move on.
