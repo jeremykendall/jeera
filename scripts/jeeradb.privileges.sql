@@ -1,0 +1,2 @@
+CREATE USER 'jeeradbuser' IDENTIFIED BY '29nvms09*jMS0s!$hso0.';
+FLUSH PRIVILEGES;
