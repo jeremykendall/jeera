@@ -28,7 +28,7 @@ class TicketsController extends Zend_Controller_Action
     }
 
     /**
-     * Will display list of submitted tickets and link to submit new
+     * Will display list of submitted tickets and link to submit new tickets
      */
     public function indexAction()
     {
@@ -41,7 +41,7 @@ class TicketsController extends Zend_Controller_Action
     public function viewAction()
     {
         $ticketId = (int) $this->getRequest()->getParam('ticket');
-        
+
         if ($ticketId) {
             $table = new Jeera_Model_DbTable_Tickets();
             $ticket = $table->find($ticketId);
@@ -55,22 +55,22 @@ class TicketsController extends Zend_Controller_Action
     public function submitAction()
     {
         $user = Zend_Auth::getInstance()->getIdentity();
-        
+
         $form = new Jeera_Form_NewTicket();
         $form->getElement('createdBy')->setValue($user['userId']);
         $form->getElement('lastUpdatedBy')->setValue($user['userId']);
         $this->view->form = $form;
-        
+
         $request = $this->getRequest();
 
         if (!$request->isPost() || !$form->isValid($request->getPost())) {
             return;
         }
-        
+
         $table = new Jeera_Model_DbTable_Tickets();
         $table->insert($form->getValues());
         $ticketId = $table->getAdapter()->lastInsertId();
-        
+
         // TODO use different redirector so path isn't so brittle
         return $this->_redirect('/tickets/view/ticket/' . $ticketId);
     }
