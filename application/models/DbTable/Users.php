@@ -39,4 +39,12 @@ class Jeera_Model_DbTable_Users extends Zend_Db_Table_Abstract
             ->order('lastName');
         return $this->getAdapter()->fetchPairs($select);
     }
+
+    public function findUsersMultiOptions()
+    {
+        $select = $this->select()
+            ->from($this, array('userId', 'username'))
+            ->order('lastName');
+        return $this->getAdapter()->fetchPairs($select);
+    }
 }
