@@ -42,6 +42,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->navigation($navigationContainer);
 
         $view->addHelperPath(APPLICATION_PATH . '/views/helpers', 'Jeera_View_Helper');
+        
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
         $viewRenderer->setView($view);
 
