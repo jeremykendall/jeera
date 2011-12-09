@@ -51,30 +51,41 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected function _initNavigation()
     {
         $container = new Zend_Navigation(array(
-            array(
-                'label' => 'Home',
-                'module' => 'default',
-                'controller' => 'tickets',
-                'action' => 'index',
-                'reset_params' => true
-            ),
-            array(
-                'label' => 'Submit Ticket',
-                'module' => 'default',
-                'controller' => 'tickets',
-                'action' => 'submit',
-                'reset_params' => true
-            ),
-            array(
-                'label' => 'Search',
-                'module' => 'default',
-                'controller' => 'tickets',
-                'action' => 'search',
-                'reset_params' => true
-            )
-        ));
+                array(
+                    'label' => 'Home',
+                    'module' => 'default',
+                    'controller' => 'tickets',
+                    'action' => 'index',
+                    'reset_params' => true
+                ),
+                array(
+                    'label' => 'Submit Ticket',
+                    'module' => 'default',
+                    'controller' => 'tickets',
+                    'action' => 'submit',
+                    'reset_params' => true
+                ),
+                array(
+                    'label' => 'Search',
+                    'module' => 'default',
+                    'controller' => 'tickets',
+                    'action' => 'search',
+                    'reset_params' => true
+                )
+            ));
 
         return $container;
+    }
+
+    public function _initTranslator()
+    {
+        $translator = new Zend_Translate(array(
+                'adapter' => 'array',
+                'content' => realpath(APPLICATION_PATH . '/../library/form-translations.php')
+                )
+        );
+        
+        return $translator;
     }
 
 }
