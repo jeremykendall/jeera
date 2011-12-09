@@ -22,9 +22,15 @@
 class TicketsController extends Zend_Controller_Action
 {
 
+    /**
+     * @var Zend_Db_Adapter_Abstract
+     */
+    private $_db;
+
     public function init()
     {
-        
+        $bootstrap = $this->getInvokeArg('bootstrap');
+        $this->_db = $bootstrap->getResource('db');
     }
 
     /**
@@ -32,7 +38,8 @@ class TicketsController extends Zend_Controller_Action
      */
     public function indexAction()
     {
-        
+        $table = new Jeera_Model_DbTable_Tickets();
+        $this->view->tickets = $table->fetchAll();
     }
 
     /**
@@ -40,11 +47,23 @@ class TicketsController extends Zend_Controller_Action
      */
     public function viewAction()
     {
+        $identity = Zend_Auth::getInstance()->getIdentity();
+        // Used in view logic
+        $this->view->isAdminUser = ($identity['userRole'] == 'admin') ? true : false;
+
         $ticketId = (int) $this->getRequest()->getParam('ticket');
 
         if ($ticketId) {
-            $table = new Jeera_Model_DbTable_Tickets();
-            $ticket = $table->find($ticketId);
+            $sql = 'SELECT t.*, a.username AS assignedTo, c.username AS createdBy, up.username AS lastUpdatedBy '
+                . 'FROM tickets AS t '
+                . 'JOIN users AS a '
+                . 'ON t.assignedTo = a.userId '
+                . 'JOIN users AS c '
+                . 'ON t.createdBy = c.userId '
+                . 'JOIN users AS up '
+                . 'ON t.lastUpdatedBy = up.userId '
+                . 'WHERE ticketId = ?';
+            $ticket = $this->_db->query($sql, array($ticketId))->fetch();
             $this->view->ticket = $ticket;
         }
     }
@@ -80,7 +99,38 @@ class TicketsController extends Zend_Controller_Action
      */
     public function modifyAction()
     {
+        $ticketId = (int) $this->getRequest()->getParam('ticket');
+        $ticketsTable = new Jeera_Model_DbTable_Tickets();
+        $ticket = $ticketsTable->find($ticketId);
+
+        if (count($ticket) == 0) {
+            $this->view->ticketNotFound = 'The ticket you requested could not be found.  Please try again.';
+            return;
+        }
+
+        $ticket = $ticket->current()->toArray();
         
+        $user = Zend_Auth::getInstance()->getIdentity();
+        $usersTable = new Jeera_Model_DbTable_Users();
+        $adminUsers = $usersTable->findAdminsMultiOptions();
+
+        $createdBy = $usersTable->find($ticket['createdBy'])->current()->toArray();
+        $ticket['createdByUsername'] = $createdBy['username'];
+        $this->view->ticket = $ticket;
+
+        $form = new Jeera_Form_EditTicket($adminUsers);
+        $form->populate($ticket);
+        $this->view->form = $form;
+
+        $request = $this->getRequest();
+
+        if (!$request->isPost() || !$form->isValid($request->getPost())) {
+            return;
+        }
+
+        $ticketsTable->update($form->getValues(), "ticketId = $ticketId");
+
+        return $this->_redirect('/tickets/view/ticket/' . $ticketId);
     }
 
     /**
