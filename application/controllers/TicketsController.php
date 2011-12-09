@@ -129,7 +129,6 @@ class TicketsController extends Zend_Controller_Action
      */
     public function modifyAction()
     {
-        // TODO Need to refactor the form and how I'm populating values in the form
         $ticketId = (int) $this->getRequest()->getParam('ticket');
         $ticketsTable = new Jeera_Model_DbTable_Tickets();
         $ticket = $ticketsTable->find($ticketId);
@@ -144,8 +143,8 @@ class TicketsController extends Zend_Controller_Action
         $user = Zend_Auth::getInstance()->getIdentity();
         $usersTable = new Jeera_Model_DbTable_Users();
         $adminUsers = $usersTable->findAdminsMultiOptions();
-
         $createdBy = $usersTable->find($ticket['createdBy'])->current()->toArray();
+
         $ticket['createdByUsername'] = $createdBy['username'];
         $this->view->ticket = $ticket;
 
@@ -190,8 +189,8 @@ class TicketsController extends Zend_Controller_Action
         $form->getElement('impact')->setMultiOptions(array_merge(array('Any impact'), $this->_impactOptions));
         $form->getElement('status')->setMultiOptions(array_merge(array('Any status'), $this->_statusOptions));
         $form->getElement('assignedTo')->setMultiOptions(array('Any assignee') + $adminUsers);
-        $form->getElement('createdBy')->setMultiOptions(array('Any assignee') + $allUsers);
-        $form->getElement('lastUpdatedBy')->setMultiOptions(array('Any assignee') + $adminUsers);
+        $form->getElement('createdBy')->setMultiOptions(array('Any user') + $allUsers);
+        $form->getElement('lastUpdatedBy')->setMultiOptions(array('Any user') + $adminUsers);
         $this->view->form = $form;
 
         $request = $this->getRequest();
