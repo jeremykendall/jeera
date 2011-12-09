@@ -32,6 +32,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->headTitle()->setSeparator(' - ');
         $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
             ->appendHttpEquiv('Content-Language', 'en-US');
+        $view->headLink()->appendStylesheet('/css/960gs/reset.css')
+            ->appendStylesheet('/css/960gs/text.css')
+            ->appendStylesheet('/css/960gs/960.css');
         $view->addHelperPath(APPLICATION_PATH . '/views/helpers', 'Jeera_View_Helper');
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
         $viewRenderer->setView($view);
