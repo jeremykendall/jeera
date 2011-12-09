@@ -26,7 +26,7 @@ $application = new Zend_Application(
 $application->bootstrap();
 $db = $application->getBootstrap()->getResource('db');
 
-$schema = file_get_contents('jeeradb.schema.sql');
+$schema = file_get_contents(dirname(__FILE__) . '/jeeradb.schema.sql');
 $db->exec($schema);
 
 $table = new Jeera_Model_DbTable_Users($db);
