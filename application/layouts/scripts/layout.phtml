@@ -1,0 +1,18 @@
+<?php echo $this->doctype() ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <?php echo $this->headTitle(); ?>
+        <?php echo $this->headMeta(); ?>
+        <?php echo $this->headLink(); ?>
+        <?php echo $this->headScript(); ?>
+    </head>
+    <body>
+        <!-- layouts/scripts/layout.phtml -->
+
+        <?php echo $this->loggedInAs(); ?>
+
+        <?php echo $this->layout()->content; ?>
+
+    </body>
+</html>
