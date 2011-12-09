@@ -1,0 +1,97 @@
+body {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+#header p#logout {
+    float: right;
+    font-size: 12px;
+}
+
+#header h1 {
+    float: left;
+}
+
+#navigation {
+    margin-bottom: 20px;
+}
+
+#navigation ul {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    background-color: #E9E9E9;
+    text-transform: uppercase;
+    padding: 10px 0 10px 0;
+}
+
+#navigation li {
+    display: inline;
+    list-style-type: none;
+}
+
+#navigation a {
+    text-decoration: none;
+}
+
+table {
+    width: 80%;
+}
+
+th {
+    background-color: #E6E6E6;
+    font-weight: bold;
+    padding: 5px;
+}
+
+td {
+    padding: 5px;
+}
+
+td.title {
+    background-color: #E6E6E6;
+    width: 20%;
+    font-weight: bold;
+}
+
+dl.zend dt, dd { 
+    min-height: 30px;
+}
+
+dl.zend_form dt {
+    float: left;
+    clear: left;
+    text-align: right;
+    width: 150px;
+}
+
+dl.zend_form dt label.required { 
+    font-weight: 600;
+}
+
+dl.zend_form dt label.required::after {
+    content: ' *';
+    color: #FF0000;
+}
+
+dl.zend_form dd {
+    float: left;
+    clear: right;
+    padding-left: 5px;
+}
+
+dl.zend_form dd ul.errors {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+dl.zend_form dd ul.errors li {
+    float: left;
+    margin: 0 0.15em;
+    font-size: 12px;
+    color: #FF0000;
+}
+
+#searchresults {
+    margin-top: 20px;
+}
