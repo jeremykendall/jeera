@@ -8,12 +8,16 @@ echo "<h2>$title</h2>\n";
 
 <p><a href="/tickets/submit">Submit a ticket</a></p>
 
-<?php if (!$this->tickets): ?>
+<?php if (count($this->tickets) == 0): ?>
     <p>There are no tickets currently in the system</p>
 <?php else: ?>
         <table>
             <tr>
-                <th>Id</th><th>Type</th><th>Impact</th><th>Status</th><th>Submitted</th>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Impact</th>
+                <th>Status</th>
+                <th>Submitted</th>
             </tr>
     <?php foreach ($this->tickets as $ticket): ?>
             <tr>
@@ -25,7 +29,7 @@ echo "<h2>$title</h2>\n";
         <td><?php echo $this->escape($ticket['problemType']); ?></td>
         <td><?php echo $this->escape($ticket['impact']); ?></td>
         <td><?php echo $this->escape($ticket['status']); ?></td>
-        <td><?php echo $this->escape($ticket['createdDate']); ?></td>
+        <td><?php echo date('m-d-Y g:i a', strtotime($ticket['createdDate'])); ?></td>
     </tr>
     <?php endforeach; ?>
             </table>
