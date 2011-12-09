@@ -1,23 +1,15 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of AuthController
+ * Jeera Trouble Ticket System
  *
- * @category
- * @package
- * @subpackage
- * @version     $Id$
+ * @category    Jeera
+ * @package     Jeera_Controller
  */
 
 /**
- * @category
- * @package
- * @subpackage
+ * @category    Jeera
+ * @package     Jeera_Controller
  */
 class AuthController extends Zend_Controller_Action
 {
@@ -34,7 +26,7 @@ class AuthController extends Zend_Controller_Action
     
     public function indexAction()
     {
-        
+        $this->_helper->redirector('login', 'auth');
     }
     
     public function loginAction()
@@ -65,13 +57,13 @@ class AuthController extends Zend_Controller_Action
             return;
         }
         
-        return $this->_helper->redirector('index', 'index');
+        return $this->_helper->redirector('index', 'tickets');
         
     }
     
     public function logoutAction()
     {
         Zend_Auth::getInstance()->clearIdentity();
-        return $this->_helper->redirector('index', 'index');
+        return $this->_helper->redirector('index', 'tickets');
     }
 }
