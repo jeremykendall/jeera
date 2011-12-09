@@ -58,8 +58,8 @@ class TicketsController extends Zend_Controller_Action
      */
     public function indexAction()
     {
-        $table = new Jeera_Model_DbTable_Tickets();
-        $this->view->tickets = $table->fetchAll();
+        $tickets = new Jeera_Service_Tickets($this->_db);
+        $this->view->tickets = $tickets->fetchAll();
     }
 
     /**
@@ -68,22 +68,13 @@ class TicketsController extends Zend_Controller_Action
     public function viewAction()
     {
         $identity = Zend_Auth::getInstance()->getIdentity();
-        // Used in view logic
         $this->view->isAdminUser = ($identity['userRole'] == 'admin') ? true : false;
 
         $ticketId = (int) $this->getRequest()->getParam('ticket');
 
         if ($ticketId) {
-            $sql = 'SELECT t.*, a.username AS assignedTo, c.username AS createdBy, up.username AS lastUpdatedBy '
-                . 'FROM tickets AS t '
-                . 'JOIN users AS a '
-                . 'ON t.assignedTo = a.userId '
-                . 'JOIN users AS c '
-                . 'ON t.createdBy = c.userId '
-                . 'JOIN users AS up '
-                . 'ON t.lastUpdatedBy = up.userId '
-                . 'WHERE ticketId = ?';
-            $ticket = $this->_db->query($sql, array($ticketId))->fetch();
+            $tickets = new Jeera_Service_Tickets($this->_db);
+            $ticket = $tickets->find($ticketId);
             $this->view->ticket = $ticket;
         }
     }
@@ -119,6 +110,7 @@ class TicketsController extends Zend_Controller_Action
      */
     public function modifyAction()
     {
+        // TODO Need to refactor the form and how I'm populating values in the form
         $ticketId = (int) $this->getRequest()->getParam('ticket');
         $ticketsTable = new Jeera_Model_DbTable_Tickets();
         $ticket = $ticketsTable->find($ticketId);
