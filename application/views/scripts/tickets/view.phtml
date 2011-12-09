@@ -1,8 +1,18 @@
 
 
-<?php if (!$this->ticket): ?>
+<?php
+if (!$this->ticket):
+    $title = 'Ticket Not Found';
+    $this->headTitle($title, 'APPEND');
+    echo "<h2>$title</h2>\n";
+?>
     echo '<p>The ticket you requested could not be found.  Please try again.</p>';
-<?php else: ?>
+<?php
+    else:
+        $title = 'Ticket ' . $this->escape($this->ticket['ticketId']);
+        $this->headTitle($title, 'APPEND');
+        echo "<h2>$title</h2>\n";
+?>
 
 <?php if ($this->isAdminUser): ?>
             <p><a href="/tickets/modify/ticket/<?php echo $this->escape($this->ticket['ticketId']); ?>">Edit</a></p>

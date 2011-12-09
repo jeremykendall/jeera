@@ -1,6 +1,12 @@
-<p><a href="/tickets/submit">Submit a ticket</a></p>
+<?php
 
-<p>Trouble Tickets</p>
+$title = 'Home';
+$this->headTitle($title, 'APPEND');
+echo "<h2>$title</h2>\n";
+
+?>
+
+<p><a href="/tickets/submit">Submit a ticket</a></p>
 
 <?php if (!$this->tickets): ?>
     <p>There are no tickets currently in the system</p>

@@ -1,4 +1,9 @@
-<?php 
+<?php
+
+$title = 'Login';
+$this->headTitle($title, 'APPEND');
+echo "<h2>$title</h2>\n";
+
 
 if ($this->loginErrorMessage) {
     echo '<p class="error">' . $this->loginErrorMessage . "</p>\n";
