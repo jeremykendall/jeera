@@ -26,6 +26,7 @@ class TicketsController extends Zend_Controller_Action
      * @var Zend_Db_Adapter_Abstract
      */
     private $_db;
+
     /**
      *  Ticket status options
      *
@@ -36,6 +37,7 @@ class TicketsController extends Zend_Controller_Action
         'in-progress' => 'in-progress',
         'complete' => 'complete'
     );
+
     /**
      * Ticket impact options
      *
@@ -46,15 +48,26 @@ class TicketsController extends Zend_Controller_Action
         'moderate' => 'moderate',
         'minor' => 'minor'
     );
+    
+    /**
+     * Translator for form error messages
+     * 
+     * Using Zend_Translate makes it dead easy to customize error messages.  See
+     * {@link http://framework.zend.com/manual/en/zend.form.i18n.html}
+     * 
+     * @var Zend_Translate
+     */
+    private $_translator;
 
     public function init()
     {
         $bootstrap = $this->getInvokeArg('bootstrap');
         $this->_db = $bootstrap->getResource('db');
+        $this->_translator = $bootstrap->getResource('translator');
     }
 
     /**
-     * Will display list of submitted tickets and link to submit new tickets
+     * Displays a list of submitted tickets and link to submit new tickets
      */
     public function indexAction()
     {
@@ -87,8 +100,10 @@ class TicketsController extends Zend_Controller_Action
         $user = Zend_Auth::getInstance()->getIdentity();
 
         $form = new Jeera_Form_NewTicket();
-        $form->getElement('createdBy')->setValue($user['userId']);
-        $form->getElement('lastUpdatedBy')->setValue($user['userId']);
+        $form->setTranslator($this->_translator);
+        $form->getElement('impact')
+            ->setMultiOptions(array('Select Impact') + $this->_impactOptions)
+            ->setValidators(array(new Zend_Validate_InArray($this->_impactOptions)));
         $this->view->form = $form;
 
         $request = $this->getRequest();
@@ -97,8 +112,12 @@ class TicketsController extends Zend_Controller_Action
             return;
         }
 
+        $data = $form->getValues();
+        $data['createdBy'] = $user['userId'];
+        $data['lastUpdatedBy'] = $user['userId'];
+
         $table = new Jeera_Model_DbTable_Tickets();
-        $table->insert($form->getValues());
+        $table->insert($data);
         $ticketId = $table->getAdapter()->lastInsertId();
 
         // TODO use different redirector so path isn't so brittle
@@ -130,9 +149,16 @@ class TicketsController extends Zend_Controller_Action
         $ticket['createdByUsername'] = $createdBy['username'];
         $this->view->ticket = $ticket;
 
-        $form = new Jeera_Form_EditTicket($adminUsers);
-        $form->populate($ticket);
+        $form = new Jeera_Form_EditTicket();
+        $form->setTranslator($this->_translator);
+        $form->getElement('status')->setMultiOptions($this->_statusOptions);
+        $form->getElement('impact')->setMultiOptions($this->_impactOptions);
+        $form->getElement('assignedTo')
+            ->setMultiOptions(array('Select assignee') + $adminUsers)
+            ->setValidators(array(new Zend_Validate_InArray(array_keys($adminUsers))));
         
+        $form->populate($ticket);
+
         $this->view->form = $form;
 
         $request = $this->getRequest();
@@ -141,7 +167,10 @@ class TicketsController extends Zend_Controller_Action
             return;
         }
 
-        $ticketsTable->update($form->getValues(), "ticketId = $ticketId");
+        $data = $form->getValues();
+        $data['lastUpdatedBy'] = $user['userId'];
+
+        $ticketsTable->update($data, "ticketId = $ticketId");
 
         return $this->_redirect('/tickets/view/ticket/' . $ticketId);
     }
@@ -157,6 +186,7 @@ class TicketsController extends Zend_Controller_Action
         $allUsers = $usersTable->findUsersMultiOptions();
 
         $form = new Jeera_Form_SearchTickets();
+        $form->setTranslator($this->_translator);
         $form->getElement('impact')->setMultiOptions(array_merge(array('Any impact'), $this->_impactOptions));
         $form->getElement('status')->setMultiOptions(array_merge(array('Any status'), $this->_statusOptions));
         $form->getElement('assignedTo')->setMultiOptions(array('Any assignee') + $adminUsers);

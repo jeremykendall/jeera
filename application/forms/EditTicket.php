@@ -16,34 +16,8 @@
 class Jeera_Form_EditTicket extends Jeera_Form
 {
 
-    /**
-     * @var array List of all application admin users
-     */
-    private $_adminUsers;
-
-    /**
-     * Create new Jeera_Form_EditTicket form
-     *
-     * @param array $adminUsers List of all application admin users
-     * @param mixed $options
-     */
-    public function __construct(array $adminUsers, $options = null)
-    {
-        $this->_adminUsers = $adminUsers;
-        parent::__construct($options);
-    }
-
     public function init()
     {
-        $this->addElement('hidden', 'createdBy', array(
-            'validators' => array('Int'),
-            'filters' => array('Int'),
-        ));
-
-        $this->addElement('hidden', 'lastUpdatedBy', array(
-            'validators' => array('Int'),
-            'filters' => array('Int'),
-        ));
 
         $this->addElement('text', 'problemType', array(
             'required' => true,
@@ -64,7 +38,6 @@ class Jeera_Form_EditTicket extends Jeera_Form
         );
 
         $this->addElement('select', 'status', array(
-            'multiOptions' => $statusOptions,
             'required' => true,
             'label' => 'Status'
         ));
@@ -76,19 +49,11 @@ class Jeera_Form_EditTicket extends Jeera_Form
         );
 
         $this->addElement('select', 'impact', array(
-            'multiOptions' => array_merge(array('Select impact'), $impactOptions),
-            'validators' => array(
-                array('InArray', false, array($impactOptions))
-            ),
             'required' => true,
             'label' => 'Impact'
         ));
 
         $this->addElement('select', 'assignedTo', array(
-            'multiOptions' => array('Select assignee') + $this->_adminUsers,
-            'validators' => array(
-                array('InArray', false, array(array_keys($this->_adminUsers)))
-            ),
             'required' => true,
             'label' => 'Assign To'
         ));

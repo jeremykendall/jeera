@@ -34,6 +34,10 @@ body {
 }
 
 table {
+    width: 100%;
+}
+
+table#ticket_detail {
     width: 80%;
 }
 

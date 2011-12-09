@@ -18,15 +18,6 @@ class Jeera_Form_NewTicket extends Jeera_Form
 
     public function init()
     {
-        $this->addElement('hidden', 'createdBy', array(
-            'validators' => array('Int'),
-            'filters' => array('Int'),
-        ));
-        
-        $this->addElement('hidden', 'lastUpdatedBy', array(
-            'validators' => array('Int'),
-            'filters' => array('Int'),
-        ));
         
         $this->addElement('text', 'problemType', array(
             'required' => true,
@@ -47,10 +38,6 @@ class Jeera_Form_NewTicket extends Jeera_Form
         );
 
         $this->addElement('select', 'impact', array(
-            'multiOptions' => array_merge(array('Select impact'), $impactOptions),
-            'validators' => array(
-                array('InArray', false, array($impactOptions))
-            ),
             'required' => true,
             'label' => 'Impact'
         ));

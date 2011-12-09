@@ -31,6 +31,10 @@ class Jeera_Form_SearchTickets extends Jeera_Form
         $this->addElement('select', 'status', array(
             'label' => 'Status'
         ));
+        
+        $this->addElement('select', 'impact', array(
+            'label' => 'Impact'
+        ));
 
         $this->addElement('select', 'createdBy', array(
             'label' => 'Created By'
@@ -38,10 +42,6 @@ class Jeera_Form_SearchTickets extends Jeera_Form
 
         $this->addElement('select', 'assignedTo', array(
             'label' => 'Assigned To'
-        ));
-        
-        $this->addElement('select', 'impact', array(
-            'label' => 'Impact'
         ));
 
         $this->addElement('select', 'lastUpdatedBy', array(
