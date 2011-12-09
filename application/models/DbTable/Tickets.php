@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Table Data Gateway access for Tickets table
+ * Jeera Trouble Ticket System
  *
  * @category    Jeera
  * @package     Jeera_Model
@@ -9,6 +9,8 @@
  */
 
 /**
+ * Tickets database table
+ * 
  * @category    Jeera
  * @package     Jeera_Model
  * @subpackage  DbTable
@@ -21,7 +23,8 @@ class Jeera_Model_DbTable_Tickets extends Zend_Db_Table_Abstract
     protected $_primary = 'ticketId';
 
     /**
-     * Overrides Zend_Db_Table_Abstract::insert() to provide status and createdDate
+     * Overrides Zend_Db_Table_Abstract::insert() to provide status,
+     * lastUpdatedDate, and createdDate
      *
      * @param array $data 
      */

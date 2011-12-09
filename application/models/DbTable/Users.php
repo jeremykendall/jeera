@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Table Data Gateway access for Users table
+ * Jeera Trouble Ticket System
  *
  * @category    Jeera
  * @package     Jeera_Model
@@ -9,6 +9,8 @@
  */
 
 /**
+ * Users database table
+ * 
  * @category    Jeera
  * @package     Jeera_Model
  * @subpackage  DbTable
@@ -20,7 +22,7 @@ class Jeera_Model_DbTable_Users extends Zend_Db_Table_Abstract
     protected $_primary = 'userId';
 
     /**
-     * Retrieves user row as array
+     * Retrieves user row
      * 
      * @param string $username
      * @return Zend_Db_Table_Row_Abstract|null
@@ -31,6 +33,11 @@ class Jeera_Model_DbTable_Users extends Zend_Db_Table_Abstract
         return $this->fetchRow($select);
     }
 
+    /**
+     * Gets array of admin users for use in form select elements
+     * 
+     * @return array 
+     */
     public function findAdminsMultiOptions()
     {
         $select = $this->select()
@@ -40,6 +47,11 @@ class Jeera_Model_DbTable_Users extends Zend_Db_Table_Abstract
         return $this->getAdapter()->fetchPairs($select);
     }
 
+    /**
+     * Gets array of all users for use in form select elements
+     * 
+     * @return array
+     */
     public function findUsersMultiOptions()
     {
         $select = $this->select()
@@ -47,4 +59,5 @@ class Jeera_Model_DbTable_Users extends Zend_Db_Table_Abstract
             ->order('lastName');
         return $this->getAdapter()->fetchPairs($select);
     }
+
 }
