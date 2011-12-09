@@ -1,7 +1,58 @@
-<?php
 
-if ($this->ticket) {
-    var_dump($this->ticket);
-} else {
+
+<?php if (!$this->ticket): ?>
     echo '<p>The ticket you requested could not be found.  Please try again.</p>';
-}
+<?php else: ?>
+
+<?php if ($this->isAdminUser): ?>
+            <p><a href="/tickets/modify/ticket/<?php echo $this->escape($this->ticket['ticketId']); ?>">Edit</a></p>
+<?php endif; ?>
+
+            <table>
+                <tr>
+                    <th colspan="2">Ticket <?php echo $this->escape($this->ticket['ticketId']); ?></th>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td><?php echo $this->escape($this->ticket['problemType']); ?></td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td><?php echo $this->escape($this->ticket['problemDescription']); ?></td>
+                </tr>
+                <tr>
+                    <td>Impact</td>
+                    <td><?php echo $this->escape($this->ticket['impact']); ?></td>
+                </tr>
+                <tr>
+                    <td>Assigned To</td>
+                    <td><?php echo $this->escape($this->ticket['assignedTo']); ?></td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td><?php echo $this->escape($this->ticket['status']); ?></td>
+                </tr>
+                <tr>
+                    <td>Notes</td>
+                    <td><?php echo $this->escape($this->ticket['notes']); ?></td>
+                </tr>
+                <tr>
+                    <td>Created By</td>
+                    <td><?php echo $this->escape($this->ticket['createdBy']); ?></td>
+                </tr>
+                <tr>
+                    <td>Created Date</td>
+                    <td><?php echo date('m-d-Y g:i a', strtotime($this->ticket['createdDate'])); ?></td>
+                </tr>
+                <tr>
+                    <td>Last Updated By</td>
+                    <td><?php echo $this->escape($this->ticket['lastUpdatedBy']); ?></td>
+                </tr>
+                <tr>
+                    <td>Last Updated Date</td>
+                    <td><?php echo date('m-d-Y g:i a', strtotime($this->ticket['lastUpdatedDate'])); ?></td>
+                </tr>
+            </table>
+
+<?php
+            endif;

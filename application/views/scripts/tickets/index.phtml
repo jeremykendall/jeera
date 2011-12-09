@@ -1,7 +1,27 @@
-<h1>Jeera</h1>
-
 <p><a href="/tickets/submit">Submit a ticket</a></p>
 
-<p>Your submitted tickets</p>
+<p>Trouble Tickets</p>
 
-<?php echo $this->tickets; ?>
+<?php if (!$this->tickets): ?>
+    <p>There are no tickets currently in the system</p>
+<?php else: ?>
+        <table>
+            <tr>
+                <th>Id</th><th>Type</th><th>Impact</th><th>Status</th><th>Submitted</th>
+            </tr>
+    <?php foreach ($this->tickets as $ticket): ?>
+            <tr>
+                <td>
+                    <a href="/tickets/view/ticket/<?php echo $this->escape($ticket['ticketId']); ?>">
+                <?php echo $this->escape($ticket['ticketId']); ?>
+            </a>
+        </td>
+        <td><?php echo $this->escape($ticket['problemType']); ?></td>
+        <td><?php echo $this->escape($ticket['impact']); ?></td>
+        <td><?php echo $this->escape($ticket['status']); ?></td>
+        <td><?php echo $this->escape($ticket['createdDate']); ?></td>
+    </tr>
+    <?php endforeach; ?>
+            </table>
+
+<?php endif; ?>
