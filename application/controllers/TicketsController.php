@@ -26,6 +26,26 @@ class TicketsController extends Zend_Controller_Action
      * @var Zend_Db_Adapter_Abstract
      */
     private $_db;
+    /**
+     *  Ticket status options
+     *
+     * @var array
+     */
+    private $_statusOptions = array(
+        'new' => 'new',
+        'in-progress' => 'in-progress',
+        'complete' => 'complete'
+    );
+    /**
+     * Ticket impact options
+     *
+     * @var array
+     */
+    private $_impactOptions = array(
+        'critical' => 'critical',
+        'moderate' => 'moderate',
+        'minor' => 'minor'
+    );
 
     public function init()
     {
@@ -109,7 +129,7 @@ class TicketsController extends Zend_Controller_Action
         }
 
         $ticket = $ticket->current()->toArray();
-        
+
         $user = Zend_Auth::getInstance()->getIdentity();
         $usersTable = new Jeera_Model_DbTable_Users();
         $adminUsers = $usersTable->findAdminsMultiOptions();
@@ -138,7 +158,27 @@ class TicketsController extends Zend_Controller_Action
      */
     public function searchAction()
     {
-        
+        $user = Zend_Auth::getInstance()->getIdentity();
+        $usersTable = new Jeera_Model_DbTable_Users();
+        $adminUsers = $usersTable->findAdminsMultiOptions();
+        $allUsers = $usersTable->findUsersMultiOptions();
+
+        $form = new Jeera_Form_SearchTickets();
+        $form->getElement('impact')->setMultiOptions(array_merge(array('Any impact'), $this->_impactOptions));
+        $form->getElement('status')->setMultiOptions(array_merge(array('Any status'), $this->_statusOptions));
+        $form->getElement('assignedTo')->setMultiOptions(array('Any assignee') + $adminUsers);
+        $form->getElement('createdBy')->setMultiOptions(array('Any assignee') + $allUsers);
+        $form->getElement('lastUpdatedBy')->setMultiOptions(array('Any assignee') + $adminUsers);
+        $this->view->form = $form;
+
+        $request = $this->getRequest();
+
+        if (!$request->isPost() || !$form->isValid($request->getPost())) {
+            return;
+        }
+
+        $service = new Jeera_Service_Tickets($this->_db);
+        $this->view->searchResults = $service->search($form->getValues());
     }
 
 }
