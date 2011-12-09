@@ -1,0 +1,12 @@
+<?php
+
+$title = 'Search Tickets';
+$this->headTitle($title, 'APPEND');
+echo "<h2>$title</h2>\n";
+
+echo $this->form->render();
+
+if ($this->searchResults)
+{
+    var_dump($this->searchResults);
+}
