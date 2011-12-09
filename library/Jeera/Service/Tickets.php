@@ -31,6 +31,24 @@ class Jeera_Service_Tickets
         $this->_db = $db;
     }
 
+    public function find($ticketId)
+    {
+        $sql = $this->getTicketSql();
+        $sql .= ' WHERE t.ticketId = ?';
+        return $this->_db->query($sql, array($ticketId))->fetch();
+    }
+
+    /**
+     * Fetch all tickets
+     *
+     * @return array
+     */
+    public function fetchAll()
+    {
+        $sql = $this->getTicketSql();
+        return $this->_db->fetchAll($sql);
+    }
+
     /**
      * Searches ticket database
      *
@@ -40,65 +58,63 @@ class Jeera_Service_Tickets
     public function search(array $data)
     {
 
-        $sql = 'SELECT t.*, a.username AS assignedTo, c.username AS createdBy, up.username AS lastUpdatedBy '
-            . 'FROM tickets AS t '
-            . 'JOIN users AS a '
-            . 'ON t.assignedTo = a.userId '
-            . 'JOIN users AS c '
-            . 'ON t.createdBy = c.userId '
-            . 'JOIN users AS up '
-            . 'ON t.lastUpdatedBy = up.userId ';
-
         $where = array();
-        $params = array();
+        $bind = array();
 
         if (strlen($data['ticketId']) >= 6) {
             $where[] = 't.ticketId = :ticketId';
-            $params[':ticketId'] = $data['ticketId'];
+            $bind[':ticketId'] = $data['ticketId'];
         }
 
         if ($data['status'] != '0') {
             $where[] = 't.status = :status';
-            $params[':status'] = $data['status'];
+            $bind[':status'] = $data['status'];
         }
 
         if ($data['createdBy'] != '0') {
             $where[] = 't.createdBy = :createdBy';
-            $params[':createdBy'] = $data['createdBy'];
+            $bind[':createdBy'] = $data['createdBy'];
         }
 
         if ($data['assignedTo'] != '0') {
             $where[] = 't.assignedTo = :assignedTo';
-            $params[':assignedTo'] = $data['assignedTo'];
+            $bind[':assignedTo'] = $data['assignedTo'];
         }
 
         if ($data['impact'] != '0') {
             $where[] = 't.impact = :impact';
-            $params[':impact'] = $data['impact'];
+            $bind[':impact'] = $data['impact'];
         }
 
         if ($data['lastUpdatedBy'] != '0') {
             $where[] = 't.lastUpdatedBy = :lastUpdatedBy';
-            $params[':lastUpdatedBy'] = $data['lastUpdatedBy'];
+            $bind[':lastUpdatedBy'] = $data['lastUpdatedBy'];
         }
 
         if (strlen($data['textSearch']) > 0) {
             $where[] = 't.problemType LIKE :textSearch OR t.problemDescription LIKE :textSearch OR t.notes LIKE :textSearch';
-            $params[':textSearch'] = '%' . $data['textSearch'] . '%';
+            $bind[':textSearch'] = '%' . $data['textSearch'] . '%';
         }
 
         if (count($where) == 0) {
             return $this->_db->fetchAll($sql);
         }
 
-        $whereClause = implode(' AND ', $where);
+        $sql = $this->getTicketSql() . ' WHERE ' . implode(' AND ', $where);
 
-        $sql .= 'WHERE ' . $whereClause;
+        return $this->_db->fetchAll($sql, $bind);
+    }
 
-        d($sql);
-        d($params);
-
-        return $this->_db->fetchAll($sql, $params);
+    public function getTicketSql()
+    {
+        return 'SELECT t.*, a.username AS assignedTo, c.username AS createdBy, up.username AS lastUpdatedBy '
+            . 'FROM tickets AS t '
+            . 'LEFT JOIN users AS a '
+            . 'ON t.assignedTo = a.userId '
+            . 'JOIN users AS c '
+            . 'ON t.createdBy = c.userId '
+            . 'JOIN users AS up '
+            . 'ON t.lastUpdatedBy = up.userId';
     }
 
 }
