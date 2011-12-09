@@ -95,7 +95,31 @@ class Jeera_Service_Tickets
             $where[] = 't.problemType LIKE :textSearch OR t.problemDescription LIKE :textSearch OR t.notes LIKE :textSearch';
             $bind[':textSearch'] = '%' . $data['textSearch'] . '%';
         }
-
+        
+        if (strlen($data['createdAfter'] > 0) && strlen($data['createdBefore'] > 0)) {
+            $where[] = 't.createdDate BETWEEN :createdAfter AND :createdBefore';
+            $bind[':createdAfter'] = $data['createdAfter'];
+            $bind[':createdBefore'] = $data['createdBefore'];
+        } else if (strlen($data['createdAfter'] > 0)) {
+            $where[] = 't.createdDate > :createdAfter';
+            $bind[':createdAfter'] = $data['createdAfter'];
+        } else if (strlen($data['createdBefore'] > 0)) {
+            $where[] = 't.createdDate < :createdBefore';
+            $bind[':createdBefore'] = $data['createdBefore'];
+        }
+        
+        if (strlen($data['updatedAfter'] > 0) && strlen($data['updatedBefore'] > 0)) {
+            $where[] = 't.lastUpdatedDate BETWEEN :updatedAfter AND :updatedBefore';
+            $bind[':updatedAfter'] = $data['updatedAfter'];
+            $bind[':updatedBefore'] = $data['updatedBefore'];
+        } else if (strlen($data['updatedAfter'] > 0)) {
+            $where[] = 't.lastUpdatedDate > :updatedAfter';
+            $bind[':updatedAfter'] = $data['updatedAfter'];
+        } else if (strlen($data['updatedBefore'] > 0)) {
+            $where[] = 't.lastUpdatedDate < :updatedBefore';
+            $bind[':updatedBefore'] = $data['updatedBefore'];
+        }
+        
         $sql = $this->getTicketSql();
 
         if (count($where) == 0) {
@@ -103,7 +127,7 @@ class Jeera_Service_Tickets
         }
 
         $sql .= ' WHERE ' . implode(' AND ', $where);
-
+        
         return $this->_db->fetchAll($sql, $bind);
     }
 
