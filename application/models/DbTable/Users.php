@@ -30,4 +30,13 @@ class Jeera_Model_DbTable_Users extends Zend_Db_Table_Abstract
         $select = $this->select()->where('username = ?', $username);
         return $this->fetchRow($select);
     }
+
+    public function findAdminsMultiOptions()
+    {
+        $select = $this->select()
+            ->from($this, array('userId', 'username'))
+            ->where('userRole = ?', 'admin')
+            ->order('lastName');
+        return $this->getAdapter()->fetchPairs($select);
+    }
 }
