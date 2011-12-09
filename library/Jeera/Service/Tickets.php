@@ -96,11 +96,13 @@ class Jeera_Service_Tickets
             $bind[':textSearch'] = '%' . $data['textSearch'] . '%';
         }
 
+        $sql = $this->getTicketSql();
+
         if (count($where) == 0) {
             return $this->_db->fetchAll($sql);
         }
 
-        $sql = $this->getTicketSql() . ' WHERE ' . implode(' AND ', $where);
+        $sql .= ' WHERE ' . implode(' AND ', $where);
 
         return $this->_db->fetchAll($sql, $bind);
     }

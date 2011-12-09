@@ -13,7 +13,7 @@
  * @category    Jeera
  * @package     Jeera_Form
  */
-class Jeera_Form_NewTicket extends Zend_Form
+class Jeera_Form_NewTicket extends Jeera_Form
 {
 
     public function init()
@@ -65,6 +65,7 @@ class Jeera_Form_NewTicket extends Zend_Form
             new Zend_Filter_StringTrim(),
             new Zend_Filter_StripTags()
         ));
+        
     }
 
 }

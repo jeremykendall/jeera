@@ -132,6 +132,7 @@ class TicketsController extends Zend_Controller_Action
 
         $form = new Jeera_Form_EditTicket($adminUsers);
         $form->populate($ticket);
+        
         $this->view->form = $form;
 
         $request = $this->getRequest();

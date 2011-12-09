@@ -13,7 +13,7 @@
  * @category    Jeera
  * @package     Jeera_Form
  */
-class Jeera_Form_SearchTickets extends Zend_Form
+class Jeera_Form_SearchTickets extends Jeera_Form
 {
 
     public function init()
@@ -29,27 +29,22 @@ class Jeera_Form_SearchTickets extends Zend_Form
         ));
 
         $this->addElement('select', 'status', array(
-            'required' => true,
             'label' => 'Status'
         ));
 
         $this->addElement('select', 'createdBy', array(
-            'required' => true,
             'label' => 'Created By'
         ));
 
         $this->addElement('select', 'assignedTo', array(
-            'required' => true,
             'label' => 'Assigned To'
         ));
         
         $this->addElement('select', 'impact', array(
-            'required' => true,
             'label' => 'Impact'
         ));
 
         $this->addElement('select', 'lastUpdatedBy', array(
-            'required' => true,
             'label' => 'Last Updated By'
         ));
 

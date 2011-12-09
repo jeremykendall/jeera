@@ -13,7 +13,7 @@
  * @category    Jeera
  * @package     Jeera_Form
  */
-class Jeera_Form_EditTicket extends Zend_Form
+class Jeera_Form_EditTicket extends Jeera_Form
 {
 
     /**

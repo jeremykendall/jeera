@@ -2,16 +2,13 @@
 if ($this->ticketNotFound) {
     $title = 'Edit Ticket';
     $this->headTitle($title, 'APPEND');
-    echo "<h2>Ticket Not Found</h2>\n";
     echo '<p>' . $this->ticketNotFound . "</p>\n";
 } else {
     $title = 'Edit Ticket ' . $this->escape($this->ticket['ticketId']);
     $this->headTitle($title, 'APPEND');
-    echo "<h2>$title</h2>\n";
 ?>
-    <p>Ticket #<?php echo $this->escape($this->ticket['ticketId']); ?></p>
     <p>
-        Submitted by <?php echo $this->escape($this->ticket['createdByUsername']); ?>
+        Submitted by <strong><?php echo $this->escape($this->ticket['createdByUsername']); ?></strong>
         at <?php echo date('m-d-Y g:i a', strtotime($this->ticket['createdDate'])); ?>
     </p>
 

@@ -34,12 +34,47 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             ->appendHttpEquiv('Content-Language', 'en-US');
         $view->headLink()->appendStylesheet('/css/960gs/reset.css')
             ->appendStylesheet('/css/960gs/text.css')
-            ->appendStylesheet('/css/960gs/960.css');
+            ->appendStylesheet('/css/960gs/960.css')
+            ->appendStylesheet('/css/site.css');
+
+        $this->bootstrap('Navigation');
+        $navigationContainer = $this->getResource('Navigation');
+        $view->navigation($navigationContainer);
+
         $view->addHelperPath(APPLICATION_PATH . '/views/helpers', 'Jeera_View_Helper');
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
         $viewRenderer->setView($view);
 
         return $view;
+    }
+
+    protected function _initNavigation()
+    {
+        $container = new Zend_Navigation(array(
+            array(
+                'label' => 'Home',
+                'module' => 'default',
+                'controller' => 'tickets',
+                'action' => 'index',
+                'reset_params' => true
+            ),
+            array(
+                'label' => 'Submit Ticket',
+                'module' => 'default',
+                'controller' => 'tickets',
+                'action' => 'submit',
+                'reset_params' => true
+            ),
+            array(
+                'label' => 'Search',
+                'module' => 'default',
+                'controller' => 'tickets',
+                'action' => 'search',
+                'reset_params' => true
+            )
+        ));
+
+        return $container;
     }
 
 }
