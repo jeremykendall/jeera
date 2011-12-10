@@ -25,7 +25,7 @@ else:
         </tr>
         <tr>
             <td class="title">Description</td>
-            <td><?php echo $this->escape($this->ticket['problemDescription']); ?></td>
+            <td><?php echo nl2br($this->escape($this->ticket['problemDescription'])); ?></td>
         </tr>
         <tr>
             <td class="title">Impact</td>
@@ -41,7 +41,7 @@ else:
         </tr>
         <tr>
             <td class="title">Notes</td>
-            <td><?php echo $this->escape($this->ticket['notes']); ?></td>
+            <td><?php echo nl2br($this->escape($this->ticket['notes'])); ?></td>
         </tr>
         <tr>
             <td class="title">Created By</td>
